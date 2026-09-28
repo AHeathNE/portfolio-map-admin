@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio Map</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="header__row">
+      <div>
+        <h1 class="header__title">Portfolio Map</h1>
+        <p class="header__subtitle">Each point is a project, placed by tone and polish. Click a point to learn more.</p>
+      </div>
+      <div class="header__controls">
+        <label class="switch">
+          <input type="checkbox" id="thumbToggle" checked />
+          <span class="switch__track"><span class="switch__thumb"></span></span>
+          <span class="switch__label">Show thumbnails</span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <section class="chart-wrap">
+      <div class="chart" id="chart">
+
+        <!-- quadrant tint layers -->
+        <div class="quadrant quadrant--tl" data-quadrant="irreverent-high"></div>
+        <div class="quadrant quadrant--tr" data-quadrant="reverent-high"></div>
+        <div class="quadrant quadrant--bl" data-quadrant="irreverent-low"></div>
+        <div class="quadrant quadrant--br" data-quadrant="reverent-low"></div>
+
+        <!-- gridlines -->
+        <div class="axis axis--x"></div>
+        <div class="axis axis--y"></div>
+
+        <!-- axis end labels -->
+        <span class="axis-label axis-label--left">Irreverent</span>
+        <span class="axis-label axis-label--right">Reverent</span>
+        <span class="axis-label axis-label--top">High Fidelity</span>
+        <span class="axis-label axis-label--bottom">Low Fidelity</span>
+
+        <!-- nodes injected by script.js -->
+        <div class="nodes" id="nodes"></div>
+
+        <!-- category color legend, injected by script.js -->
+        <div class="legend" id="legend" hidden></div>
+
+      </div>
+    </section>
+
+    <aside class="panel" id="panel">
+      <div class="panel__empty" id="panelEmpty">
+        <p>Select a point on the chart to see project details here.</p>
+      </div>
+
+      <div class="panel__content" id="panelContent" hidden>
+        <button class="panel__close" id="panelClose" aria-label="Close">&times;</button>
+        <div class="panel__image-wrap" id="panelImageWrap" hidden>
+          <img class="panel__image" id="panelImage" alt="" />
+        </div>
+        <h2 class="panel__title" id="panelTitle"></h2>
+        <div class="panel__category" id="panelCategory" hidden>
+          <span class="panel__category-swatch" id="panelCategorySwatch"></span>
+          <span id="panelCategoryName"></span>
+        </div>
+        <div class="panel__tags" id="panelTags"></div>
+        <p class="panel__description" id="panelDescription"></p>
+        <a class="panel__link" id="panelLink" href="#" target="_blank" rel="noopener">View project &rarr;</a>
+      </div>
+    </aside>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

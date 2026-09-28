@@ -1,0 +1,6 @@
+[
+  { "id": "people", "name": "People", "color": "#f97316" },
+  { "id": "object", "name": "Object", "color": "#34d399" },
+  { "id": "digital", "name": "Digital", "color": "#60a5fa" },
+  { "id": "print", "name": "Print", "color": "#c084fc" }
+]

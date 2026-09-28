@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio Map Admin</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="header__row">
+      <div>
+        <h1 class="header__title">Portfolio Map Admin</h1>
+        <p class="header__subtitle">Manage the projects on a portfolio map site folder.</p>
+      </div>
+    </div>
+    <div class="folder-bar" id="folderBar">
+      <span class="folder-bar__label">Site folder</span>
+      <span class="folder-bar__path" id="folderPath">Not set</span>
+      <button type="button" class="btn btn--ghost btn--small" id="folderChangeBtn">Change&hellip;</button>
+    </div>
+    <form class="folder-edit" id="folderEditForm" hidden>
+      <input type="text" id="folderInput" placeholder="/absolute/path/to/site" autocomplete="off" />
+      <button type="submit" class="btn btn--primary btn--small">Use this folder</button>
+      <button type="button" class="btn btn--ghost btn--small" id="folderCancelBtn">Cancel</button>
+    </form>
+    <div class="folder-recent" id="folderRecent" hidden></div>
+    <p class="folder-error" id="folderError" hidden></p>
+  </header>
+
+  <section class="setup-card" id="offlineNotice" hidden>
+    <h2>This page needs to be running through its server</h2>
+    <p>
+      It looks like this file was opened directly in the browser (the address bar doesn't say
+      <code>localhost</code>). The admin needs its small Python server running to read and save
+      anything. From a terminal, in the <code>admin</code> folder, run:
+    </p>
+    <pre class="setup-card__code">python3 server.py</pre>
+    <p>Then open the address it prints — usually <code>http://localhost:8420</code> — instead of double-clicking this file.</p>
+  </section>
+
+  <section class="setup-card" id="setupCard" hidden>
+    <h2>Point the admin at a site folder</h2>
+    <p>
+      This admin edits the data behind a portfolio map site — but it isn't pointed at one yet.
+      Enter the path to an existing site folder, or an empty folder to start a brand new site there.
+    </p>
+    <form class="folder-edit folder-edit--setup" id="setupForm">
+      <input type="text" id="setupFolderInput" placeholder="/absolute/path/to/site" autocomplete="off" />
+      <button type="submit" class="btn btn--primary">Use this folder</button>
+    </form>
+    <div class="folder-recent" id="setupRecent" hidden></div>
+    <p class="form-error" id="setupError" hidden></p>
+  </section>
+
+  <main class="admin-layout" id="adminLayout" hidden>
+
+    <section class="admin-form-col">
+
+      <form class="admin-card" id="nodeForm">
+        <h2 class="admin-card__title" id="formTitle">Add a node</h2>
+
+        <label class="field">
+          <span class="field__label">Title</span>
+          <input type="text" id="fieldTitle" required placeholder="Project name" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Category <span class="field__hint">(sets the node's color — manage categories on the right)</span></span>
+          <select id="fieldCategory">
+            <option value="">No category</option>
+          </select>
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">X — Irreverent (-1) to Reverent (1)</span>
+            <input type="number" id="fieldX" min="-1" max="1" step="0.01" value="0" />
+          </label>
+          <label class="field">
+            <span class="field__label">Y — Low (-1) to High Fidelity (1)</span>
+            <input type="number" id="fieldY" min="-1" max="1" step="0.01" value="0" />
+          </label>
+        </div>
+
+        <div class="field">
+          <span class="field__label">Position — click the chart to place it</span>
+          <div class="mini-chart" id="miniChart">
+            <div class="quadrant quadrant--tl"></div>
+            <div class="quadrant quadrant--tr"></div>
+            <div class="quadrant quadrant--bl"></div>
+            <div class="quadrant quadrant--br"></div>
+            <div class="axis axis--x"></div>
+            <div class="axis axis--y"></div>
+            <span class="axis-label axis-label--left">Irreverent</span>
+            <span class="axis-label axis-label--right">Reverent</span>
+            <span class="axis-label axis-label--top">High Fidelity</span>
+            <span class="axis-label axis-label--bottom">Low Fidelity</span>
+            <div class="mini-chart__existing" id="miniChartExisting"></div>
+            <div class="mini-chart__target" id="miniChartTarget" hidden></div>
+          </div>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Description</span>
+          <textarea id="fieldDescription" rows="4" placeholder="Why does this project sit here?"></textarea>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Tags <span class="field__hint">(comma separated)</span></span>
+          <input type="text" id="fieldTags" placeholder="print, typography, sacred" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Link <span class="field__hint">(optional)</span></span>
+          <input type="url" id="fieldLink" placeholder="https://..." />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Thumbnail image <span class="field__hint">(optional)</span></span>
+          <input type="file" id="fieldImage" accept="image/*" />
+        </label>
+
+        <div class="image-preview" id="imagePreviewWrap" hidden>
+          <img id="imagePreview" alt="Thumbnail preview" />
+          <button type="button" class="image-preview__remove" id="imagePreviewRemove">Remove image</button>
+        </div>
+
+        <p class="form-error" id="formError" hidden></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary" id="submitBtn">Add node</button>
+          <button type="button" class="btn btn--ghost" id="cancelEditBtn" hidden>Cancel edit</button>
+        </div>
+      </form>
+
+    </section>
+
+    <section class="admin-list-col">
+      <div class="admin-card">
+        <h2 class="admin-card__title">Categories <span class="count" id="categoryCount"></span></h2>
+        <p class="admin-card__hint">Categories give nodes a color on the map. Assign one to a node from the form on the left.</p>
+        <ul class="category-list" id="categoryList"></ul>
+
+        <form class="category-form" id="categoryForm">
+          <input type="text" id="categoryName" placeholder="Category name" required maxlength="24" />
+          <input type="color" id="categoryColor" value="#7dd3fc" aria-label="Category color" />
+          <button type="submit" class="btn btn--primary">Add</button>
+        </form>
+        <p class="form-error" id="categoryError" hidden></p>
+      </div>
+
+      <div class="admin-card">
+        <h2 class="admin-card__title">Existing nodes <span class="count" id="nodeCount"></span></h2>
+        <ul class="node-list" id="nodeList"></ul>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
